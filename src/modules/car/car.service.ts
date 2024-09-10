@@ -1,3 +1,4 @@
+import noDataFound from "../../utils/noDataFound.utils";
 import { TCar } from "./car.interface";
 import Car from "./car.model";
 
@@ -11,7 +12,13 @@ const getAllCars = async () => {
   return cars;
 };
 
+const getCarById = async (id: string) => {
+  const car = await Car.findById(id);
+  return car;
+};
+
 export const carService = {
   createCar,
   getAllCars,
+  getCarById,
 };

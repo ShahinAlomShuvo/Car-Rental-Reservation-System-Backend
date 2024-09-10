@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync.utils";
 import sendResponse from "../../utils/sendResponse.utils";
 import { carService } from "./car.service";
 import { carValidation } from "./car.validation";
+import noDataFound from "../../utils/noDataFound.utils";
 
 const createCar = catchAsync(async (req, res) => {
   const carData = req.body;
@@ -18,6 +19,9 @@ const createCar = catchAsync(async (req, res) => {
 
 const getAllCars = catchAsync(async (req, res) => {
   const cars = await carService.getAllCars();
+  if (!cars) {
+    noDataFound(res, "Data not found");
+  }
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -26,7 +30,22 @@ const getAllCars = catchAsync(async (req, res) => {
   });
 });
 
+const getCarById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const car = await carService.getCarById(id);
+  if (!car) {
+    noDataFound(res, "Data not found");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Car retrieved successfully",
+    data: car,
+  });
+});
+
 export const carController = {
   createCar,
   getAllCars,
+  getCarById,
 };
