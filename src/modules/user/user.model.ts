@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import { TUser } from "./user.interface";
 
-const userSchema = new Schema({
+const userSchema = new Schema<TUser>({
   name: { type: String, required: true },
   email: { type: String, required: true },
   role: { type: String, required: true },
@@ -9,6 +10,6 @@ const userSchema = new Schema({
   address: { type: String, required: true },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<TUser>("User", userSchema);
 
 export default User;
