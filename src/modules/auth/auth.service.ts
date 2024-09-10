@@ -7,13 +7,18 @@ import User from "../user/user.model";
 import jwt from "jsonwebtoken";
 
 const signUp = async (user: TUser) => {
-  const existingUser = await User.findOne({ email: user.email });
-  if (existingUser) {
-    throw new Error("User already exists");
+  const isExist = await existingUser(user.email);
+  if (isExist) {
+    throw new Error("User already exist");
   }
   const newUser = await User.create(user);
   const result = await User.findById(newUser._id).select("-password");
   return result;
+};
+
+const existingUser = async (email: string) => {
+  const existingUser = await User.findOne({ email });
+  return existingUser;
 };
 
 const signIn = async (payload: TSignIn) => {
@@ -47,4 +52,5 @@ const signIn = async (payload: TSignIn) => {
 export const authService = {
   signUp,
   signIn,
+  existingUser,
 };
