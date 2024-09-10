@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service";
 import { userValidation } from "../user/user.validation";
 
-const signUp = async (req: Request, res: Response) => {
+const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userData = req.body;
     const parsedData = userValidation.userValidationSchema.parse(userData);
@@ -13,11 +13,7 @@ const signUp = async (req: Request, res: Response) => {
       data: user,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to sign up",
-      error: error,
-    });
+    next(error);
   }
 };
 
