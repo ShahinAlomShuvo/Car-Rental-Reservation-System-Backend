@@ -6,3 +6,5 @@ export type TUser = {
   phone: string;
   address: string;
 };
+
+export type TSignIn = Pick<TUser, "email" | "password">;
