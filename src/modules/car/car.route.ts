@@ -10,4 +10,6 @@ route.get("/", carController.getAllCars);
 
 route.get("/:id", carController.getCarById);
 
+route.put("/:id", auth("admin"), carController.updateCar);
+
 export const carRoute = route;

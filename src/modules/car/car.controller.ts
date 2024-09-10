@@ -44,8 +44,27 @@ const getCarById = catchAsync(async (req, res) => {
   });
 });
 
+const updateCar = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const carData = req.body;
+  const parsedData = carValidation.updateCarValidationSchema.parse(carData);
+  const car = await carService.getCarById(id);
+  if (!car) {
+    noDataFound(res, "Data not found");
+  }
+
+  const result = await carService.updateCar(id, parsedData);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Car updated successfully",
+    data: result,
+  });
+});
+
 export const carController = {
   createCar,
   getAllCars,
   getCarById,
+  updateCar,
 };

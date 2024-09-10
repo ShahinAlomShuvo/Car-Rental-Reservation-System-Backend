@@ -1,4 +1,3 @@
-import noDataFound from "../../utils/noDataFound.utils";
 import { TCar } from "./car.interface";
 import Car from "./car.model";
 
@@ -17,8 +16,13 @@ const getCarById = async (id: string) => {
   return car;
 };
 
+const updateCar = async (id: string, payload: Partial<TCar>) => {
+  const result = await Car.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
 export const carService = {
   createCar,
   getAllCars,
   getCarById,
+  updateCar,
 };
