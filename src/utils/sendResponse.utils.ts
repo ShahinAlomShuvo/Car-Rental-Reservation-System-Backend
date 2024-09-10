@@ -12,7 +12,7 @@ const sendResponse = <T>(res: Response, data: TSendResponse<T>) => {
     success: data.success,
     statusCode: data.statusCode,
     message: data.message,
-    data,
+    data: data.data,
   });
 };
 

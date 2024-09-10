@@ -6,4 +6,6 @@ const route = Router();
 
 route.post("/", auth("admin"), carController.createCar);
 
+route.get("/", carController.getAllCars);
+
 export const carRoute = route;

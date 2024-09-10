@@ -6,6 +6,12 @@ const createCar = async (payload: TCar) => {
   return car;
 };
 
+const getAllCars = async () => {
+  const cars = await Car.find();
+  return cars;
+};
+
 export const carService = {
   createCar,
+  getAllCars,
 };
