@@ -1,21 +1,16 @@
-import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service";
 import { userValidation } from "../user/user.validation";
+import catchAsync from "../../utils/catchAsync.utils";
 
-const signUp = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const userData = req.body;
-    const parsedData = userValidation.userValidationSchema.parse(userData);
-    const user = await authService.signUp(parsedData);
-    res.status(200).json({
-      success: true,
-      message: "User signed up successfully",
-      data: user,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+const signUp = catchAsync(async (req, res) => {
+  const userData = req.body;
+  const parsedData = userValidation.userValidationSchema.parse(userData);
+  const user = await authService.signUp(parsedData);
+  res.status(201).json({
+    status: "success",
+    data: user,
+  });
+});
 
 export const authController = {
   signUp,
