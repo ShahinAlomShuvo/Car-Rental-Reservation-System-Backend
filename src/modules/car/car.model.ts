@@ -21,6 +21,26 @@ const CarSchema = new Schema<TCar>(
   }
 );
 
+CarSchema.pre("find", async function (next) {
+  this.where({ isDeleted: { $ne: true } });
+  next();
+});
+
+CarSchema.pre("findOne", async function (next) {
+  this.where({ isDeleted: { $ne: true } });
+  next();
+});
+
+CarSchema.pre("findOneAndUpdate", async function (next) {
+  this.where({ isDeleted: { $ne: true } });
+  next();
+});
+
+CarSchema.pre("aggregate", async function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
 const Car = mongoose.model<TCar>("Car", CarSchema);
 
 export default Car;

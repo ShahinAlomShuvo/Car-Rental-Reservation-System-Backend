@@ -12,4 +12,6 @@ route.get("/:id", carController.getCarById);
 
 route.put("/:id", auth("admin"), carController.updateCar);
 
+route.delete("/:id", auth("admin"), carController.deleteCar);
+
 export const carRoute = route;
