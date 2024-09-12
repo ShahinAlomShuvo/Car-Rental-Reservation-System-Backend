@@ -1,5 +1,5 @@
 import { carService } from "../car/car.service";
-import { TBooking } from "./booking.interface";
+import { TBooking, TQuery } from "./booking.interface";
 import Booking from "./booking.model";
 
 const bookingACar = async (data: TBooking) => {
@@ -17,8 +17,15 @@ const bookingACar = async (data: TBooking) => {
   return booking;
 };
 
-const getAllBookings = async () => {
-  const bookings = await Booking.find().populate("car").populate({
+const getAllBookings = async ({ carId, date }) => {
+  const filter: TQuery = {};
+  if (carId) {
+    filter["car"] = carId;
+  }
+  if (date) {
+    filter["date"] = date;
+  }
+  const bookings = await Booking.find(filter).populate("car").populate({
     path: "user",
     select: "-password",
   });

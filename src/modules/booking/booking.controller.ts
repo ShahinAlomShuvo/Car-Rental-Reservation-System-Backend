@@ -26,7 +26,8 @@ const bookingACar = catchAsync(async (req, res) => {
 });
 
 const getAllBookings = catchAsync(async (req, res) => {
-  const bookings = await bookingService.getAllBookings();
+  const { carId, date } = req.query;
+  const bookings = await bookingService.getAllBookings({ carId, date });
   if (!bookings.length) {
     noDataFound(res, "Data not found");
   }
