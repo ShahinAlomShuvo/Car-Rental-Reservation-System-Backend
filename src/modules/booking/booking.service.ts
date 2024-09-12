@@ -4,7 +4,7 @@ import Booking from "./booking.model";
 
 const bookingACar = async (data: TBooking) => {
   const carId = data.car.toString();
-  const isCarAvailable = carService.availableCar(carId);
+  const isCarAvailable = await carService.availableCar(carId);
   if (!isCarAvailable) {
     throw new Error("Car is not available");
   }
@@ -17,6 +17,15 @@ const bookingACar = async (data: TBooking) => {
   return booking;
 };
 
+const getAllBookings = async () => {
+  const bookings = await Booking.find().populate("car").populate({
+    path: "user",
+    select: "-password",
+  });
+  return bookings;
+};
+
 export const bookingService = {
   bookingACar,
+  getAllBookings,
 };

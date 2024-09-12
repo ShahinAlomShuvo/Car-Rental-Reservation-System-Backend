@@ -4,6 +4,7 @@ import sendResponse from "../../utils/sendResponse.utils";
 import { bookingService } from "./booking.service";
 import { bookingValidation } from "./booking.validation";
 import authData from "../../utils/getDataFromToken.utils";
+import noDataFound from "../../utils/noDataFound.utils";
 
 const bookingACar = catchAsync(async (req, res) => {
   const data = req.body;
@@ -24,6 +25,20 @@ const bookingACar = catchAsync(async (req, res) => {
   });
 });
 
+const getAllBookings = catchAsync(async (req, res) => {
+  const bookings = await bookingService.getAllBookings();
+  if (!bookings.length) {
+    noDataFound(res, "Data not found");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Bookings retrieved successfully",
+    data: bookings,
+  });
+});
+
 export const bookingController = {
   bookingACar,
+  getAllBookings,
 };
