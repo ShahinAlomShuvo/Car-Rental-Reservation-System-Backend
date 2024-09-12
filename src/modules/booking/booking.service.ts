@@ -1,20 +1,39 @@
+import Car from "../car/car.model";
 import { carService } from "../car/car.service";
 import { TBooking, TQuery } from "./booking.interface";
 import Booking from "./booking.model";
 
 const bookingACar = async (data: TBooking) => {
+  const session = await Booking.startSession();
   const carId = data.car.toString();
   const isCarAvailable = await carService.availableCar(carId);
   if (!isCarAvailable) {
     throw new Error("Car is not available");
   }
-  const booking = (await (await Booking.create(data)).populate("car")).populate(
-    {
-      path: "user",
-      select: "-password",
-    }
-  );
-  return booking;
+  try {
+    session.startTransaction();
+
+    const booking = await Booking.create([data], { session });
+
+    await Car.findByIdAndUpdate(carId, { status: "booked" }, { session });
+
+    await session.commitTransaction();
+
+    const createdBooking = await Booking.findById({
+      _id: booking[0]._id.toString(),
+    })
+      .populate("car")
+      .populate({
+        path: "user",
+        select: "-password",
+      });
+    return createdBooking;
+  } catch (error) {
+    console.log(error);
+    await session.abortTransaction();
+    throw new Error("Booking failed. Transaction aborted.");
+  }
+  session.endSession();
 };
 
 const getAllBookings = async ({ carId, date }) => {
