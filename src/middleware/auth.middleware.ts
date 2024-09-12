@@ -2,6 +2,7 @@ import config from "../config";
 import { authService } from "../modules/auth/auth.service";
 import catchAsync from "../utils/catchAsync.utils";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import unauthorizeResponse from "../utils/unauthorizeResponse.utils";
 
 const auth = (requiredRole: string) => {
   return catchAsync(async (req, res, next) => {
@@ -17,14 +18,14 @@ const auth = (requiredRole: string) => {
 
     const { role, email } = verify as JwtPayload;
     if (role !== requiredRole) {
-      throw new Error("You have no access to this route");
+      unauthorizeResponse(res);
     }
     const user = await authService.existingUser(email);
     if (!user) {
-      throw new Error("You have no access to this route");
+      unauthorizeResponse(res);
     }
-    if (requiredRole !== user.role) {
-      throw new Error("You have no access to this route");
+    if (requiredRole !== user?.role) {
+      unauthorizeResponse(res);
     }
     next();
   });
