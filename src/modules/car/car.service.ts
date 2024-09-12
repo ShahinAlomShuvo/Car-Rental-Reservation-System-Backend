@@ -30,10 +30,16 @@ const deleteCar = async (id: string) => {
   return result;
 };
 
+const availableCar = async (id: string) => {
+  const result = await Car.findOne({ _id: id, status: "available" });
+  return result;
+};
+
 export const carService = {
   createCar,
   getAllCars,
   getCarById,
   updateCar,
   deleteCar,
+  availableCar,
 };

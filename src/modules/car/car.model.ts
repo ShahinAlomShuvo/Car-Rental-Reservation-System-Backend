@@ -18,6 +18,12 @@ const CarSchema = new Schema<TCar>(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
 
