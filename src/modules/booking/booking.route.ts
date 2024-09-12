@@ -8,4 +8,6 @@ route.post("/", auth("user"), bookingController.bookingACar);
 
 route.get("/", auth("admin"), bookingController.getAllBookings);
 
+route.get("/my-bookings", auth("user"), bookingController.myBookings);
+
 export const bookingRoute = route;

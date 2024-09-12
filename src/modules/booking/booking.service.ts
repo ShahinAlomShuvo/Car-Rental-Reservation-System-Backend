@@ -32,7 +32,18 @@ const getAllBookings = async ({ carId, date }) => {
   return bookings;
 };
 
+const myBookings = async (userId: string) => {
+  const bookings = await Booking.find({ user: userId })
+    .populate("car")
+    .populate({
+      path: "user",
+      select: "-password",
+    });
+  return bookings;
+};
+
 export const bookingService = {
   bookingACar,
   getAllBookings,
+  myBookings,
 };
