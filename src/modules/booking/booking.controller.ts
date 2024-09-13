@@ -49,7 +49,7 @@ const myBookings = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Bookings retrieved successfully",
+    message: "My Bookings retrieved successfully",
     data: bookings,
   });
 });

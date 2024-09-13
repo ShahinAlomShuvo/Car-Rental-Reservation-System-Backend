@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const bookingValidationSchema = z.object({
+const bookingValidationSchema = z.object({
   date: z.string().refine(
     (val) => {
       // Validate date format (YYYY-MM-DD)
@@ -24,6 +24,22 @@ export const bookingValidationSchema = z.object({
   ),
 });
 
+const returnCarValidationSchema = z.object({
+  bookingId: z.string({
+    required_error: "Booking reference is required",
+  }),
+  endTime: z.string().refine(
+    (val) => {
+      // Validate time format (HH:MM)
+      return /^\d{2}:\d{2}$/.test(val);
+    },
+    {
+      message: "Invalid endTime format, expected HH:MM",
+    }
+  ),
+});
+
 export const bookingValidation = {
   bookingValidationSchema,
+  returnCarValidationSchema,
 };

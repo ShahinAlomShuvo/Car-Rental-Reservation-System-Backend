@@ -10,6 +10,7 @@ route.get("/", carController.getAllCars);
 
 route.get("/:id", carController.getCarById);
 
+route.put("/return", auth("admin"), carController.returnCar);
 route.put("/:id", auth("admin"), carController.updateCar);
 
 route.delete("/:id", auth("admin"), carController.deleteCar);

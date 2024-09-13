@@ -15,7 +15,7 @@ const bookingACar = async (data: TBooking) => {
 
     const booking = await Booking.create([data], { session });
 
-    await Car.findByIdAndUpdate(carId, { status: "booked" }, { session });
+    await Car.findByIdAndUpdate(carId, { status: "unavailable" }, { session });
 
     await session.commitTransaction();
 
@@ -31,7 +31,6 @@ const bookingACar = async (data: TBooking) => {
   } catch (error) {
     console.log(error);
     await session.abortTransaction();
-    throw new Error("Booking failed. Transaction aborted.");
   }
   session.endSession();
 };

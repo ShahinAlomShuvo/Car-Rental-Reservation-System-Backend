@@ -4,6 +4,7 @@ import sendResponse from "../../utils/sendResponse.utils";
 import { carService } from "./car.service";
 import { carValidation } from "./car.validation";
 import noDataFound from "../../utils/noDataFound.utils";
+import { bookingValidation } from "../booking/booking.validation";
 
 const createCar = catchAsync(async (req, res) => {
   const carData = req.body;
@@ -78,10 +79,23 @@ const deleteCar = catchAsync(async (req, res) => {
   });
 });
 
+const returnCar = catchAsync(async (req, res) => {
+  const data = req.body;
+  const parsedData = bookingValidation.returnCarValidationSchema.parse(data);
+  const booking = await carService.returnCar(parsedData);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Car returned successfully",
+    data: booking,
+  });
+});
+
 export const carController = {
   createCar,
   getAllCars,
   getCarById,
   updateCar,
   deleteCar,
+  returnCar,
 };
