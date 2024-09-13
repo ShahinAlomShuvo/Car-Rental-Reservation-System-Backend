@@ -1,5 +1,4 @@
 import { authService } from "./auth.service";
-import { userValidation } from "../user/user.validation";
 import catchAsync from "../../utils/catchAsync.utils";
 import sendResponse from "../../utils/sendResponse.utils";
 import httpStatus from "http-status";
@@ -7,8 +6,7 @@ import config from "../../config";
 
 const signUp = catchAsync(async (req, res) => {
   const userData = req.body;
-  const parsedData = userValidation.userValidationSchema.parse(userData);
-  const user = await authService.signUp(parsedData);
+  const user = await authService.signUp(userData);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,

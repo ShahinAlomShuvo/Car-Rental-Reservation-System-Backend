@@ -2,19 +2,17 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync.utils";
 import sendResponse from "../../utils/sendResponse.utils";
 import { bookingService } from "./booking.service";
-import { bookingValidation } from "./booking.validation";
 import authData from "../../utils/getDataFromToken.utils";
 import noDataFound from "../../utils/noDataFound.utils";
 
 const bookingACar = catchAsync(async (req, res) => {
   const data = req.body;
-  const parsedData = bookingValidation.bookingValidationSchema.parse(data);
   const userData = authData(req);
   const userId = userData?._id;
   const bookingData = {
-    ...parsedData,
+    ...data,
     user: userId,
-    date: new Date(parsedData.date),
+    date: new Date(data.date),
   };
   const booking = await bookingService.bookingACar(bookingData);
   sendResponse(res, {

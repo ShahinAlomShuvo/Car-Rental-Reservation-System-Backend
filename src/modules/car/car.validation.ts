@@ -11,7 +11,23 @@ const createCarValidationSchema = z.object({
 
 const updateCarValidationSchema = createCarValidationSchema.partial();
 
+const returnCarValidationSchema = z.object({
+  bookingId: z.string({
+    required_error: "Booking reference is required",
+  }),
+  endTime: z.string().refine(
+    (val) => {
+      // Validate time format (HH:MM)
+      return /^\d{2}:\d{2}$/.test(val);
+    },
+    {
+      message: "Invalid endTime format, expected HH:MM",
+    }
+  ),
+});
+
 export const carValidation = {
   createCarValidationSchema,
   updateCarValidationSchema,
+  returnCarValidationSchema,
 };

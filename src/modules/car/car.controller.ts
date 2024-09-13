@@ -8,8 +8,7 @@ import { bookingValidation } from "../booking/booking.validation";
 
 const createCar = catchAsync(async (req, res) => {
   const carData = req.body;
-  const parsedData = carValidation.createCarValidationSchema.parse(carData);
-  const car = await carService.createCar(parsedData);
+  const car = await carService.createCar(carData);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
@@ -48,13 +47,12 @@ const getCarById = catchAsync(async (req, res) => {
 const updateCar = catchAsync(async (req, res) => {
   const { id } = req.params;
   const carData = req.body;
-  const parsedData = carValidation.updateCarValidationSchema.parse(carData);
   const car = await carService.getCarById(id);
   if (!car) {
     noDataFound(res, "Data not found");
   }
 
-  const result = await carService.updateCar(id, parsedData);
+  const result = await carService.updateCar(id, carData);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -81,8 +79,8 @@ const deleteCar = catchAsync(async (req, res) => {
 
 const returnCar = catchAsync(async (req, res) => {
   const data = req.body;
-  const parsedData = bookingValidation.returnCarValidationSchema.parse(data);
-  const booking = await carService.returnCar(parsedData);
+
+  const booking = await carService.returnCar(data);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
