@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import { AppError } from "../../errors/AppError";
 import Car from "../car/car.model";
 import { carService } from "../car/car.service";
 import { TBooking, TQuery } from "./booking.interface";
@@ -8,7 +10,7 @@ const bookingACar = async (data: TBooking) => {
   const carId = data.car.toString();
   const isCarAvailable = await carService.availableCar(carId);
   if (!isCarAvailable) {
-    throw new Error("Car is not available");
+    throw new AppError(httpStatus.BAD_REQUEST, "Car is not available");
   }
   try {
     session.startTransaction();

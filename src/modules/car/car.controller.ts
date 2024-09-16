@@ -2,9 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync.utils";
 import sendResponse from "../../utils/sendResponse.utils";
 import { carService } from "./car.service";
-import { carValidation } from "./car.validation";
 import noDataFound from "../../utils/noDataFound.utils";
-import { bookingValidation } from "../booking/booking.validation";
 
 const createCar = catchAsync(async (req, res) => {
   const carData = req.body;
@@ -47,10 +45,6 @@ const getCarById = catchAsync(async (req, res) => {
 const updateCar = catchAsync(async (req, res) => {
   const { id } = req.params;
   const carData = req.body;
-  const car = await carService.getCarById(id);
-  if (!car) {
-    noDataFound(res, "Data not found");
-  }
 
   const result = await carService.updateCar(id, carData);
   sendResponse(res, {
@@ -63,10 +57,6 @@ const updateCar = catchAsync(async (req, res) => {
 
 const deleteCar = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const car = await carService.getCarById(id);
-  if (!car) {
-    noDataFound(res, "Data not found");
-  }
 
   const result = await carService.deleteCar(id);
   sendResponse(res, {

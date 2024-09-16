@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import { AppError } from "../../errors/AppError";
 import Booking from "../booking/booking.model";
 import { convertTimeToHours } from "./car.constant";
 import { TCar, TReturnCar } from "./car.interface";
@@ -19,11 +21,21 @@ const getCarById = async (id: string) => {
 };
 
 const updateCar = async (id: string, payload: Partial<TCar>) => {
+  const isExist = await getCarById(id);
+  if (!isExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Car not found for update");
+  }
+
   const result = await Car.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };
 
 const deleteCar = async (id: string) => {
+  const isExist = await getCarById(id);
+  if (!isExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Car not found");
+  }
+
   const result = await Car.findByIdAndUpdate(
     id,
     { isDeleted: true },
@@ -36,7 +48,10 @@ const returnCar = async (data: TReturnCar) => {
   const session = await Booking.startSession();
   const booking = await Booking.findById(data.bookingId);
   if (!booking) {
-    throw new Error("No booking available with this id for return car");
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "No booking available with this id for return car"
+    );
   }
 
   const startTime = convertTimeToHours(booking.startTime);
@@ -44,10 +59,10 @@ const returnCar = async (data: TReturnCar) => {
   const duration = endTime - startTime;
   const car = await getCarById(booking?.car.toString());
   if (!car) {
-    throw new Error("Car not found");
+    throw new AppError(httpStatus.BAD_REQUEST, "Car not found");
   }
   if (car.status !== "unavailable") {
-    throw new Error("Car is not booked");
+    throw new AppError(httpStatus.BAD_REQUEST, "Car is not booked");
   }
 
   const totalCost = duration * car.pricePerHour;
