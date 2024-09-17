@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import httpStatus from "http-status";
 import { AppError } from "../../errors/AppError";
 import Booking from "../booking/booking.model";
