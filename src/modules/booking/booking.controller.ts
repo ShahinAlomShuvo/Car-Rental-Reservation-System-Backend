@@ -4,6 +4,7 @@ import sendResponse from "../../utils/sendResponse.utils";
 import { bookingService } from "./booking.service";
 import authData from "../../utils/getDataFromToken.utils";
 import noDataFound from "../../utils/noDataFound.utils";
+import { TQuery } from "./booking.interface";
 
 const bookingACar = catchAsync(async (req, res) => {
   const data = req.body;
@@ -24,7 +25,7 @@ const bookingACar = catchAsync(async (req, res) => {
 });
 
 const getAllBookings = catchAsync(async (req, res) => {
-  const { carId, date } = req.query;
+  const { car: carId, date }: TQuery = req.query;
   const bookings = await bookingService.getAllBookings({ carId, date });
   if (!bookings.length) {
     noDataFound(res, "Data not found");

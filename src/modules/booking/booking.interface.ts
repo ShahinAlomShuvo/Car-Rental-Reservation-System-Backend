@@ -13,3 +13,8 @@ export type TQuery = {
   car?: string;
   date?: Date;
 };
+
+export type TQueryProps = {
+  carId?: string;
+  date?: Date;
+};

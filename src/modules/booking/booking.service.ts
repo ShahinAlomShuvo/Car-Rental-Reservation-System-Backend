@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import { AppError } from "../../errors/AppError";
 import Car from "../car/car.model";
 import { carService } from "../car/car.service";
-import { TBooking, TQuery } from "./booking.interface";
+import { TBooking, TQueryProps, TQuery } from "./booking.interface";
 import Booking from "./booking.model";
 
 const bookingACar = async (data: TBooking) => {
@@ -37,7 +37,7 @@ const bookingACar = async (data: TBooking) => {
   session.endSession();
 };
 
-const getAllBookings = async ({ carId, date }) => {
+const getAllBookings = async ({ carId, date }: TQueryProps) => {
   const filter: TQuery = {};
   if (carId) {
     filter["car"] = carId;
