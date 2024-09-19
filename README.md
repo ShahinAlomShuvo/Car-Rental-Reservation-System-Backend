@@ -55,3 +55,21 @@ git clone https://github.com/ShahinAlomShuvo/Car-Rental-Reservation-System-Backe
 cd Car-Rental-Reservation-System-Backend
 npm install
 ```
+
+## Environment Variables
+
+To run the application, create a `.env` file in the root of your project with the following variables:
+
+```bash
+NODE_ENV=development
+PORT=5000
+
+DB_URI=<YOUR_MONGODB_URI>
+
+SALT_ROUNDS=12
+
+JWT_ACCESS_SECRET=<YOUR_ACCESS_TOKEN_SECRET>
+JWT_ACCESS_EXPIRE_IN=1d
+JWT_REFRESH_SECRET=<YOUR_REFRESH_TOKEN_SECRET>
+JWT_REFRESH_EXPIRE_IN=7d
+```
